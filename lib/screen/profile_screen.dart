@@ -48,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       padding: const EdgeInsets.only(
                         top: 15.0,
-                        left: 20,
+                        // left: 20,
                         bottom: 10,
                       ),
                       child: const Icon(
@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       padding: const EdgeInsets.only(
                         top: 15.0,
-                        left: 20,
+                        // left: 20,
                         bottom: 10,
                       ),
                       alignment: Alignment.centerLeft,

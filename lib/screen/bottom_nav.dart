@@ -1,6 +1,5 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media/screen/add_post_screen.dart';
 import 'package:social_media/screen/home_screen.dart';
 import 'package:social_media/screen/profile_screen.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
@@ -31,10 +30,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       'title': 'Feeds',
     },
     {
-      'page': const AddPostScreen(),
-      'title': 'Add New Post',
-    },
-    {
       'page': const ProfileScreen(),
       'title': 'My Profile',
     },
@@ -47,6 +42,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     GlobalKey globalKey = GlobalKey<State<TitledBottomNavigationBar>>();
+    bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       body: Material(
         child: PageTransitionSwitcher(
@@ -61,6 +57,14 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           child: _pages[_selectedPageIndex]['page'] as Widget,
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+      floatingActionButton: Visibility(
+        visible: !keyboardIsOpen,
+        child: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {},
+        ),
+      ),
       bottomNavigationBar: TitledBottomNavigationBar(
         key: globalKey,
         onTap: _selectPage,
@@ -72,10 +76,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           TitledNavigationBarItem(
             icon: const Icon(Icons.feed),
             title: const Text('Feeds'),
-          ),
-          TitledNavigationBarItem(
-            icon: const Icon(Icons.add),
-            title: const Text('Add New Post'),
           ),
           TitledNavigationBarItem(
             icon: const Icon(Icons.account_circle_outlined),
