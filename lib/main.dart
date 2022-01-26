@@ -1,32 +1,49 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media/auth/login.dart';
-import 'package:social_media/auth/register.dart';
-import 'package:social_media/constants/theme.dart';
-import 'package:social_media/screen/bottom_nav.dart';
-import 'package:social_media/screen/home_screen.dart';
-import 'package:social_media/screen/profile_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:social_media/screen/auth_checker.dart';
+import 'package:social_media/screen/error_screen.dart';
+import 'package:social_media/screen/loading_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+//  This is a FutureProvider that will be used to check whether the firebase has been initialized or not
+final firebaseinitializerProvider = FutureProvider<FirebaseApp>((ref) async {
+  return await Firebase.initializeApp();
+});
 
-  // This widget is the root of your application.
+class MyApp extends ConsumerWidget {
+  const MyApp({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    //  We will watch this provider to see if the firebase has been initialized
+    //  As said this gives async value so it can gives 3 types of results
+    //  1. The result is a Future<FirebaseApp>
+    //  2. The result is a Future<Error>
+    //  3. It's still loading
+
+    final initialize = ref.watch(firebaseinitializerProvider);
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: Constants.darkTheme,
-      routes: {
-        '/': (context) => const RegisterScreen(),
-        RegisterScreen.routeName: (context) => RegisterScreen(),
-        BottomNavigationScreen.routeName: (context) => const BottomNavigationScreen(),
-        LoginScreen.routeName: (context) => LoginScreen(),
-        HomeScreen.routeName: (context) => HomeScreen(),
-        ProfileScreen.routeName: (context) => ProfileScreen(),
-      },
+      debugShowCheckedModeBanner: false,
+
+      //  We will use the initialize to check if the firebase has been initialized
+      //  .when function can only be used with AsysncValue. If you hover over intialize
+      //  you can see what type of variable it is. I have left it dynamic here for your better understanding
+      //  Though it's always recommended to not to use dynamic variables.
+
+      // Now here if the Firebase is initialized we will be redirected to AuthChecker
+      // which checks if the user is logged in or not.
+
+      //  the other Two functions speaks for themselves.
+      home: initialize.when(
+          data: (data) {
+            return const AuthChecker();
+          },
+          loading: () => const LoadingScreen(),
+          error: (e, stackTrace) => ErrorScreen(e, stackTrace)),
     );
   }
 }
