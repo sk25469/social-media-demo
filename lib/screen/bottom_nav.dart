@@ -52,7 +52,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               animation: primaryAnimation,
               secondaryAnimation: secondaryAnimatiion,
               child: child,
-              // fillColor: Colors.black,
             );
           },
           child: _pages[_selectedPageIndex]['page'] as Widget,

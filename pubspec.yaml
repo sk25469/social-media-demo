@@ -40,11 +40,11 @@ dependencies:
   flutter_icons: ^1.1.0
   uuid: ^3.0.4
   path_provider: ^2.0.2
-  image_picker: ^0.8.1+1
   firebase_storage: ^9.0.0
   titled_navigation_bar: ^5.0.0-nullsafety.0
   animations: ^2.0.2
   firebase_core: ^1.11.0
+  image_picker: ^0.8.4+5
   flutter_riverpod: ^1.0.3
   font_awesome_flutter: ^9.2.0
 

@@ -49,7 +49,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       padding: const EdgeInsets.only(
                         top: 15.0,
-                        // left: 20,
                         bottom: 10,
                       ),
                       child: const Icon(
@@ -61,7 +60,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       padding: const EdgeInsets.only(
                         top: 15.0,
-                        // left: 20,
                         bottom: 10,
                       ),
                       alignment: Alignment.centerLeft,
@@ -90,33 +88,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(55),
                                 border: Border.all(
-                                  color: Colors.purpleAccent,
+                                  color: const Color.fromARGB(255, 64, 192, 251),
                                   width: 2,
                                 ),
                               ),
-                              child: CircleAvatar(
+                              child: const CircleAvatar(
                                 radius: 55,
                                 backgroundImage:
-                                    const AssetImage('assets/images/profile-icon.png'),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // print('Edit profile');
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(40),
-                                      color: Colors.purple,
-                                    ),
-                                    margin: const EdgeInsets.only(
-                                      left: 88,
-                                      top: 65,
-                                    ),
-                                    child: const Icon(
-                                      Icons.edit,
-                                      size: 25,
-                                    ),
-                                  ),
-                                ),
+                                    AssetImage('assets/images/profile-icon.png'),
                               ),
                             ),
                             Column(
