@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:social_media/constants/theme.dart';
 import 'package:social_media/screen/auth_checker.dart';
 import 'package:social_media/screen/error_screen.dart';
-import 'package:social_media/screen/loading_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +27,7 @@ class MyApp extends ConsumerWidget {
 
     final initialize = ref.watch(firebaseinitializerProvider);
     return MaterialApp(
+      // theme: Constants.darkTheme,
       debugShowCheckedModeBanner: false,
 
       //  We will use the initialize to check if the firebase has been initialized
@@ -39,11 +40,12 @@ class MyApp extends ConsumerWidget {
 
       //  the other Two functions speaks for themselves.
       home: initialize.when(
-          data: (data) {
-            return const AuthChecker();
-          },
-          loading: () => const LoadingScreen(),
-          error: (e, stackTrace) => ErrorScreen(e, stackTrace)),
+        data: (data) {
+          return const AuthChecker();
+        },
+        loading: () => const CircularProgressIndicator(),
+        error: (e, stackTrace) => ErrorScreen(e, stackTrace),
+      ),
     );
   }
 }

@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:social_media/provider/auth_provider.dart';
 import 'package:social_media/screen/bottom_nav.dart';
 import 'package:social_media/screen/error_screen.dart';
-import 'package:social_media/screen/home_screen.dart';
-import 'loading_screen.dart';
 import 'login_page.dart';
 
 class AuthChecker extends ConsumerWidget {
@@ -27,7 +25,7 @@ class AuthChecker extends ConsumerWidget {
         if (data != null) return const BottomNavigationScreen();
         return const LoginPage();
       },
-      loading: () => const LoadingScreen(),
+      loading: () => const CircularProgressIndicator(),
       error: (e, trace) => ErrorScreen(e, trace),
     );
   }

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_media/model/user.dart';
+import 'package:social_media/utils/firestore_database.dart';
 
 class Authentication {
   // For Authentication related functions you need an instance of FirebaseAuth
@@ -53,6 +55,12 @@ class Authentication {
         email: email,
         password: password,
       );
+      usersRef.add(
+        UserModel(
+          email: email,
+          name: email,
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       await showDialog(
           context: context,
@@ -70,7 +78,7 @@ class Authentication {
       if (e == 'email-already-in-use') {
         // print('Email already in use.');
       } else {
-        // print('Error: $e');
+        print('Error: $e');
       }
     }
   }

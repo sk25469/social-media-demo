@@ -37,17 +37,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
               );
         }
 
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Profile Screen'),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _onPressedFunction,
-                    child: const Text("Sign Out"),
-                  ),
-          ],
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Profile Screen',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+          ),
+          body: _isLoading
+              ? const CircularProgressIndicator()
+              : ElevatedButton(
+                  onPressed: _onPressedFunction,
+                  child: const Text("Sign Out"),
+                ),
         );
       }),
     );

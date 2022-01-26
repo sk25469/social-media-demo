@@ -1,5 +1,4 @@
 class PostModel {
-  String id;
   String postId;
   String ownerId;
   String username;
@@ -7,7 +6,6 @@ class PostModel {
   String mediaUrl;
 
   PostModel({
-    required this.id,
     required this.postId,
     required this.ownerId,
     required this.description,
@@ -15,19 +13,15 @@ class PostModel {
     required this.username,
   });
 
-  PostModel.fromJson(Map<String, dynamic> json, this.description, this.id, this.mediaUrl,
-      this.ownerId, this.postId, this.username) {
-    id = json['id'];
-    postId = json['postId'];
-    ownerId = json['ownerId'];
-    username = json['username'];
-    description = json['description'];
-    mediaUrl = json['mediaUrl'];
-  }
+  PostModel.fromJson(Map<String, dynamic> json)
+      : postId = json['postId'],
+        ownerId = json['ownerId'],
+        username = json['username'],
+        description = json['description'],
+        mediaUrl = json['mediaUrl'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
     data['postId'] = postId;
     data['ownerId'] = ownerId;
     data['description'] = description;
