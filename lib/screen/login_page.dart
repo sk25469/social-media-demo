@@ -102,24 +102,28 @@ class _LoginPageState extends State<LoginPage> {
               await _auth
                   .signInWithEmailAndPassword(_email.text, _password.text, context)
                   .whenComplete(
-                    () => _auth.authStateChange.listen((event) async {
-                      if (event == null) {
-                        loading();
-                        return;
-                      }
-                    }),
+                    () => _auth.authStateChange.listen(
+                      (event) async {
+                        if (event == null) {
+                          loading();
+                          return;
+                        }
+                      },
+                    ),
                   );
             } else {
               loading();
               await _auth
                   .signUpWithEmailAndPassword(_email.text, _password.text, context)
                   .whenComplete(
-                    () => _auth.authStateChange.listen((event) async {
-                      if (event == null) {
-                        loading();
-                        return;
-                      }
-                    }),
+                    () => _auth.authStateChange.listen(
+                      (event) async {
+                        if (event == null) {
+                          loading();
+                          return;
+                        }
+                      },
+                    ),
                   );
             }
 
@@ -131,14 +135,16 @@ class _LoginPageState extends State<LoginPage> {
 
           Future<void> _loginWithGoogle() async {
             loading2();
-            await _auth
-                .signInWithGoogle(context)
-                .whenComplete(() => _auth.authStateChange.listen((event) async {
+            await _auth.signInWithGoogle(context).whenComplete(
+                  () => _auth.authStateChange.listen(
+                    (event) async {
                       if (event == null) {
                         loading2();
                         return;
                       }
-                    }));
+                    },
+                  ),
+                );
           }
 
           return Form(
