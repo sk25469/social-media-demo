@@ -294,9 +294,6 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: const [
-                                        //  A google icon here
-                                        //  an External Package used here
-                                        //  Font_awesome_flutter package used
                                         FaIcon(FontAwesomeIcons.google),
                                         Text(
                                           ' Login with Google',
@@ -325,13 +322,13 @@ class _LoginPageState extends State<LoginPage> {
                                 style: const TextStyle(color: Colors.black),
                                 children: [
                                   TextSpan(
-                                      text:
-                                          type == Status.login ? 'Sign up now' : 'Log in',
-                                      style: TextStyle(color: Colors.blue.shade700),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          _switchType();
-                                        })
+                                    text: type == Status.login ? 'Sign up now' : 'Log in',
+                                    style: TextStyle(color: Colors.blue.shade700),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        _switchType();
+                                      },
+                                  )
                                 ],
                               ),
                             ),
