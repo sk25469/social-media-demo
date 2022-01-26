@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:social_media/provider/auth_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
+  static const routeName = '/profile-screen';
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override

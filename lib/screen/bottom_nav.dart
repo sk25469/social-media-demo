@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media/screen/add_post_screen.dart';
 import 'package:social_media/screen/home_screen.dart';
 import 'package:social_media/screen/profile_screen.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
@@ -62,7 +63,9 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         visible: !keyboardIsOpen,
         child: FloatingActionButton(
           child: const Icon(Icons.add),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, AddPostScreen.routeName);
+          },
         ),
       ),
       bottomNavigationBar: TitledBottomNavigationBar(
