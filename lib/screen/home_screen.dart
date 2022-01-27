@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/model/post.dart';
+import 'package:social_media/utils/firestore_database.dart';
 import 'package:social_media/widget/userpost.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,15 +10,15 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final newPost = PostModel(
-      timestamp: Timestamp.now(),
-      postId: "abc",
-      ownerId: "cde",
-      description: "efg",
-      mediaUrl:
-          "https://firebasestorage.googleapis.com/v0/b/social-media-demo-9927c.appspot.com/o/images%2F0433f1b0-01e9-44a1-a2ff-511b79ceefcbjpg?alt=media&token=9e305eb8-09a1-4105-bf58-474a92210627",
-      username: "imsahil",
-    );
+    // List<PostModel> updatedPosts = [];
+    // Future<void> _getAllPosts() async {
+    //   final newPosts = await postsRef.get();
+    //   print((newPosts.docs[0].data().username));
+    //   for (int i = 0; i < newPosts.size; i++) {
+    //     updatedPosts.add(newPosts.docs[i].data());
+    //   }
+    // }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -29,11 +30,29 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          return UserPost(postModel: newPost);
+      body: StreamBuilder<QuerySnapshot<PostModel>>(
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final updatedPosts = snapshot.requireData;
+          return ListView.builder(
+            itemCount: updatedPosts.size,
+            itemBuilder: (context, index) {
+              return UserPost(
+                postModel: updatedPosts.docs[index].data(),
+              );
+            },
+          );
         },
-        itemCount: 10,
+        stream: postsRef.snapshots(),
       ),
     );
   }
