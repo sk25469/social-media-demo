@@ -4,7 +4,7 @@ import 'package:social_media/model/post.dart';
 import 'package:social_media/utils/date_utils.dart';
 import 'package:social_media/utils/firestore_database.dart';
 
-class UserPost extends StatelessWidget {
+class UserPost extends StatefulWidget {
   final PostModel postModel;
   final bool isMyPost;
   const UserPost({
@@ -12,6 +12,13 @@ class UserPost extends StatelessWidget {
     required this.postModel,
     required this.isMyPost,
   }) : super(key: key);
+
+  @override
+  State<UserPost> createState() => _UserPostState();
+}
+
+class _UserPostState extends State<UserPost> {
+  var postModel;
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +39,13 @@ class UserPost extends StatelessWidget {
     }
 
     void deletePost() async {
-      await postsRef.where('postId', isEqualTo: postModel.postId).get().then((snapshot) {
-        for (var doc in snapshot.docs) {
-          doc.reference.delete();
-        }
-      });
+      await postsRef.where('postId', isEqualTo: widget.postModel.postId).get().then(
+        (snapshot) {
+          for (var doc in snapshot.docs) {
+            doc.reference.delete();
+          }
+        },
+      );
     }
 
     return Padding(
@@ -57,7 +66,7 @@ class UserPost extends StatelessWidget {
                         const Icon(Icons.account_circle),
                         const SizedBox(width: 8),
                         Text(
-                          "@" + postModel.username,
+                          "@" + widget.postModel.username,
                           style: const TextStyle(
                             fontSize: 18,
                           ),
@@ -66,12 +75,12 @@ class UserPost extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (isMyPost)
+                if (widget.isMyPost)
                   PopupMenuButton(
                     icon: const Icon(
                       Icons.more_vert,
                     ),
-                    color: const Color.fromARGB(255, 226, 224, 224),
+                    color: Colors.white,
                     itemBuilder: (context) => [
                       const PopupMenuItem<int>(
                         value: 0,
@@ -93,14 +102,42 @@ class UserPost extends StatelessWidget {
                       ),
                     ],
                     onSelected: (item) {
-                      // if (item == 0)
-                      //   Navigator.pushNamed(
-                      //     context,
-                      //     '/edit-post',
-                      //     arguments: postModel,
-                      //   ),
+                      if (item == 0) {
+                        Navigator.pushNamed(
+                          context,
+                          '/edit-post',
+                          arguments: postModel,
+                        );
+                      }
                       if (item == 1) {
-                        deletePost();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text(
+                                  "Are you sure you want to delete this post?"),
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      deletePost();
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Yes"),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("No"),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                        // deletePost();
                       }
                     },
                   ),
@@ -114,7 +151,7 @@ class UserPost extends StatelessWidget {
                 left: 10,
               ),
               child: Text(
-                postModel.description,
+                widget.postModel.description,
                 style: const TextStyle(
                   fontSize: 16,
                 ),
@@ -124,7 +161,7 @@ class UserPost extends StatelessWidget {
               width: double.infinity,
               height: 250,
               child: Image.network(
-                postModel.mediaUrl,
+                widget.postModel.mediaUrl,
                 fit: BoxFit.scaleDown,
               ),
             ),
@@ -136,7 +173,7 @@ class UserPost extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: Text(
-                      toReadableDate(postModel.timestamp),
+                      toReadableDate(widget.postModel.timestamp),
                       style: const TextStyle(
                         fontSize: 14,
                       ),
@@ -148,7 +185,7 @@ class UserPost extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                      toReadableTime(postModel.timestamp),
+                      toReadableTime(widget.postModel.timestamp),
                       style: const TextStyle(
                         fontSize: 14,
                       ),
@@ -160,6 +197,17 @@ class UserPost extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ProgressIndicator extends StatelessWidget {
+  const ProgressIndicator({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 }

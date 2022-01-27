@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media/model/post.dart';
-import 'package:social_media/screen/bottom_nav.dart';
 import 'package:social_media/utils/file_utils.dart';
 import 'package:social_media/utils/firestore_database.dart';
 import 'package:social_media/utils/user_utils.dart';
