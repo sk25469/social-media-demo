@@ -59,6 +59,7 @@ class Authentication {
         UserModel(
           email: email,
           name: email,
+          userId: _auth.currentUser!.uid.toString(),
         ),
       );
     } on FirebaseAuthException catch (e) {
