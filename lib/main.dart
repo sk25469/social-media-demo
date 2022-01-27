@@ -6,6 +6,7 @@ import 'package:social_media/screen/auth_checker.dart';
 import 'package:social_media/screen/bottom_nav.dart';
 import 'package:social_media/screen/error_screen.dart';
 import 'package:social_media/screen/home_screen.dart';
+import 'package:social_media/screen/my_post_screen.dart';
 import 'package:social_media/screen/profile_screen.dart';
 
 void main() {
@@ -37,6 +38,7 @@ class MyApp extends ConsumerWidget {
         ProfileScreen.routeName: (context) => const ProfileScreen(),
         AddPostScreen.routeName: (context) => const AddPostScreen(),
         BottomNavigationScreen.routeName: (context) => const BottomNavigationScreen(),
+        MyPostScreen.routeName: (context) => const MyPostScreen(),
       },
     );
   }

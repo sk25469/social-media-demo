@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:social_media/provider/auth_provider.dart';
+import 'package:social_media/screen/my_post_screen.dart';
 import 'package:social_media/utils/user_utils.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -229,7 +230,9 @@ Widget _buildProfileTile(BuildContext context, Icon icon, String title) {
             color: Colors.black,
             size: 20,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, MyPostScreen.routeName);
+          },
         ),
       ),
     ),

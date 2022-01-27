@@ -4,27 +4,28 @@ import 'package:social_media/model/post.dart';
 import 'package:social_media/utils/firestore_database.dart';
 import 'package:social_media/widget/userpost.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const routeName = '/home-screen';
-  const HomeScreen({Key? key}) : super(key: key);
+class MyPostScreen extends StatefulWidget {
+  static const routeName = '/my-post-screen';
+  const MyPostScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<MyPostScreen> createState() => _MyPostScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MyPostScreenState extends State<MyPostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
         title: const Text(
-          'My Feeds',
+          'My Posts',
           style: TextStyle(
             color: Colors.black,
           ),
         ),
-        elevation: 0,
-        backgroundColor: Colors.white,
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
             final updatedPosts = snapshot.requireData;
             if (updatedPosts.size == 0) {
               return const Center(
-                child: Text('No posts available\nPlease add some posts!'),
+                child: Text('You have no posts available\nAdd some posts!'),
               );
             } else {
               return ListView.builder(
@@ -58,13 +59,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   return UserPost(
                     postModel: updatedPosts.docs[index].data(),
-                    isMyPost: false,
+                    isMyPost: true,
                   );
                 },
               );
             }
           },
-          stream: postsRef.orderBy('timestamp', descending: true).limit(20).snapshots(),
+          stream: postsRef
+              .where(
+                'ownerId',
+                isEqualTo: firebaseAuth.currentUser!.email,
+              )
+              .orderBy('timestamp', descending: true)
+              .limit(20)
+              .snapshots(),
         ),
       ),
     );
