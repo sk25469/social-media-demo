@@ -52,7 +52,12 @@ class UserPost extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.only(bottom: 8),
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(
+                bottom: 8,
+                top: 5,
+                left: 10,
+              ),
               child: Text(
                 postModel.description,
                 style: const TextStyle(
