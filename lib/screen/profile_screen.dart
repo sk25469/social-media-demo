@@ -133,6 +133,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ],
                           ),
                         ),
+                        Column(
+                          children: [
+                            _buildProfileTile(
+                              context,
+                              const Icon(Icons.edit),
+                              'Edit Profile',
+                            ),
+                            _buildProfileTile(
+                              context,
+                              const Icon(Icons.my_library_books_rounded),
+                              'My Posts',
+                            )
+                          ],
+                        ),
                         Container(
                           width: 145,
                           height: 40,
@@ -184,4 +198,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+}
+
+Widget _buildProfileTile(BuildContext context, Icon icon, String title) {
+  var textTheme = Theme.of(context).textTheme;
+  return Container(
+    width: 350,
+    padding: const EdgeInsets.only(
+      left: 40,
+    ),
+    child: ListTile(
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: icon,
+      ),
+      title: Text(
+        title,
+        style: textTheme.headline6,
+      ),
+      trailing: Container(
+        width: 35,
+        height: 35,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey[200],
+        ),
+        child: IconButton(
+          icon: const Icon(
+            Icons.arrow_forward_ios,
+            color: Colors.black,
+            size: 20,
+          ),
+          onPressed: () {},
+        ),
+      ),
+    ),
+  );
 }

@@ -4,21 +4,17 @@ import 'package:social_media/model/post.dart';
 import 'package:social_media/utils/firestore_database.dart';
 import 'package:social_media/widget/userpost.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const routeName = '/home-screen';
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // List<PostModel> updatedPosts = [];
-    // Future<void> _getAllPosts() async {
-    //   final newPosts = await postsRef.get();
-    //   print((newPosts.docs[0].data().username));
-    //   for (int i = 0; i < newPosts.size; i++) {
-    //     updatedPosts.add(newPosts.docs[i].data());
-    //   }
-    // }
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -30,29 +26,41 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: StreamBuilder<QuerySnapshot<PostModel>>(
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
-          }
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final updatedPosts = snapshot.requireData;
-          return ListView.builder(
-            itemCount: updatedPosts.size,
-            itemBuilder: (context, index) {
-              return UserPost(
-                postModel: updatedPosts.docs[index].data(),
-              );
-            },
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await Future.delayed(
+            const Duration(
+              seconds: 1,
+            ),
           );
+          setState(() {});
         },
-        stream: postsRef.snapshots(),
+        child: StreamBuilder<QuerySnapshot<PostModel>>(
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            }
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            final updatedPosts = snapshot.requireData;
+            return updatedPosts.size == 0
+                ? const Text('No posts available')
+                : ListView.builder(
+                    itemCount: updatedPosts.size,
+                    itemBuilder: (context, index) {
+                      return UserPost(
+                        postModel: updatedPosts.docs[index].data(),
+                      );
+                    },
+                  );
+          },
+          stream: postsRef.orderBy('timestamp', descending: true).limit(20).snapshots(),
+        ),
       ),
     );
   }

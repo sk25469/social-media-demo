@@ -8,6 +8,7 @@ import 'package:social_media/model/post.dart';
 import 'package:social_media/screen/bottom_nav.dart';
 import 'package:social_media/utils/file_utils.dart';
 import 'package:social_media/utils/firestore_database.dart';
+import 'package:social_media/utils/user_utils.dart';
 import 'package:uuid/uuid.dart';
 
 class AddPostScreen extends StatefulWidget {
@@ -75,7 +76,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ownerId: userId,
           postId: id,
           timestamp: Timestamp.now(),
-          username: '',
+          username: currentUserId(userId),
         );
         await postsRef.add(post);
         print("added in firestore");
