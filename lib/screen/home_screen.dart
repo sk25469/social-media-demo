@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
       ),
       body: RefreshIndicator(
         onRefresh: () async {

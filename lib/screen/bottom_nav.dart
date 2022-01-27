@@ -36,10 +36,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     },
   ];
 
-  /// [OpenContainer] from the [Animation] package is used to provide the zooming
-  /// animation for the floating action button and
-  /// [PageTransitionSwitcher] is used to switch between the pages with a fade through
-  /// transition
   @override
   Widget build(BuildContext context) {
     GlobalKey globalKey = GlobalKey<State<TitledBottomNavigationBar>>();

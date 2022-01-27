@@ -14,8 +14,8 @@ class UserPost extends StatelessWidget {
     String toReadableDate(Timestamp timestamp) {
       var day = timestamp.toDate().day;
       var month = monthDateToName[timestamp.toDate().month];
-      var year = timestamp.toDate().year;
-      return '${day}th $month $year';
+      var year = (timestamp.toDate().year) % 100;
+      return '${day}th ${month}\' $year';
     }
 
     String toReadableTime(Timestamp timestamp) {
@@ -42,7 +42,7 @@ class UserPost extends StatelessWidget {
                     const Icon(Icons.account_circle),
                     const SizedBox(width: 8),
                     Text(
-                      postModel.username,
+                      "@" + postModel.username,
                       style: const TextStyle(
                         fontSize: 18,
                       ),
@@ -67,10 +67,10 @@ class UserPost extends StatelessWidget {
             ),
             SizedBox(
               width: double.infinity,
-              height: 200,
+              height: 250,
               child: Image.network(
                 postModel.mediaUrl,
-                fit: BoxFit.contain,
+                fit: BoxFit.scaleDown,
               ),
             ),
             Row(
