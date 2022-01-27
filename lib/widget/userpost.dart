@@ -202,14 +202,3 @@ class _UserPostState extends State<UserPost> {
     );
   }
 }
-
-class ProgressIndicator extends StatelessWidget {
-  const ProgressIndicator({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-}

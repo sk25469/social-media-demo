@@ -174,8 +174,9 @@ class _LoginPageState extends State<LoginPage> {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(25)),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(25),
+                            ),
                             child: TextFormField(
                               controller: _email,
                               autocorrect: true,
