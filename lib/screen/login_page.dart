@@ -108,13 +108,18 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   const Padding(
-                    padding: EdgeInsets.all(40.0),
+                    padding: EdgeInsets.fromLTRB(
+                      40.0,
+                      40.0,
+                      40.0,
+                      0.0,
+                    ),
                     child: Center(
-                      child: FlutterLogo(size: 81),
+                      child: FlutterLogo(size: 70),
                     ),
                   ),
                   Expanded(
-                    flex: 3,
+                    flex: 7,
                     child: Container(
                       margin: const EdgeInsets.only(top: 48),
                       child: Column(
@@ -267,7 +272,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Container(
                       width: double.infinity,
                       decoration: const BoxDecoration(color: Colors.white),
