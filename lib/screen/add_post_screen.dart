@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media/model/post.dart';
+import 'package:social_media/utils/file_utils.dart';
 import 'package:social_media/utils/firestore_database.dart';
 import 'package:uuid/uuid.dart';
 
@@ -24,6 +25,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
   _imgFromCamera() async {
     XFile? image =
         await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 50);
+    if (image == null) {
+      print("no image");
+    }
 
     setState(() {
       _image = image!;
@@ -43,25 +47,25 @@ class _AddPostScreenState extends State<AddPostScreen> {
     if (_formKey.currentState!.validate()) {
       try {
         String id = const Uuid().v4();
+        String fileName = id + FileUtils.getFileExtension(File(_image!.path));
+        File file = File(_image!.path);
         print(_image!.path);
-        await firebase_storage.FirebaseStorage.instance.ref().child("/images/").putFile(
-              File(_image!.path),
-            );
-        String downloadUrl = await firebase_storage.FirebaseStorage.instance
-            .ref()
-            .child("/images/")
-            .getDownloadURL();
-        _formKey.currentState?.save();
+        await posts.child(fileName).putFile(file);
+        print("upload done");
+        String downloadUrl = await posts.child(fileName).getDownloadURL();
+        print("download link is " + downloadUrl);
+
         PostModel post = PostModel(
           description: _caption.text,
           mediaUrl: downloadUrl,
           ownerId: 'abc',
           postId: id,
-          timestamp: Timestamp(DateTime.now().second, 0),
+          timestamp: Timestamp.now(),
           username: '',
         );
         await postsRef.add(post);
-      } catch (e) {
+        print("added in firestore");
+      } on FirebaseException catch (e) {
         print(e);
       }
     }
