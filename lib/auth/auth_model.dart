@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/model/user.dart';
 import 'package:social_media/utils/firestore_database.dart';
+import 'package:social_media/utils/user_utils.dart';
 
 class Authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -29,10 +30,6 @@ class Authentication {
         ),
       );
     }
-  }
-
-  String currentUserId(String email) {
-    return email.split('@')[0];
   }
 
   // SignUp the user using Email and Password
