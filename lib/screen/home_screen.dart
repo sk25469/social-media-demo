@@ -48,16 +48,20 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }
             final updatedPosts = snapshot.requireData;
-            return updatedPosts.size == 0
-                ? const Text('No posts available')
-                : ListView.builder(
-                    itemCount: updatedPosts.size,
-                    itemBuilder: (context, index) {
-                      return UserPost(
-                        postModel: updatedPosts.docs[index].data(),
-                      );
-                    },
+            if (updatedPosts.size == 0) {
+              return const Center(
+                child: Text('No posts available\nPlease add some posts!'),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: updatedPosts.size,
+                itemBuilder: (context, index) {
+                  return UserPost(
+                    postModel: updatedPosts.docs[index].data(),
                   );
+                },
+              );
+            }
           },
           stream: postsRef.orderBy('timestamp', descending: true).limit(20).snapshots(),
         ),
