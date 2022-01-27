@@ -140,11 +140,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               context,
                               const Icon(Icons.edit),
                               'Edit Profile',
+                              MyPostScreen.routeName,
                             ),
                             _buildProfileTile(
                               context,
                               const Icon(Icons.my_library_books_rounded),
                               'My Posts',
+                              MyPostScreen.routeName,
                             )
                           ],
                         ),
@@ -201,7 +203,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-Widget _buildProfileTile(BuildContext context, Icon icon, String title) {
+Widget _buildProfileTile(
+    BuildContext context, Icon icon, String title, String routeName) {
   var textTheme = Theme.of(context).textTheme;
   return Container(
     width: 350,
@@ -231,7 +234,7 @@ Widget _buildProfileTile(BuildContext context, Icon icon, String title) {
             size: 20,
           ),
           onPressed: () {
-            Navigator.pushNamed(context, MyPostScreen.routeName);
+            Navigator.pushNamed(context, routeName);
           },
         ),
       ),
