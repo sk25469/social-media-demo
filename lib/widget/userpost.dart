@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/model/post.dart';
+import 'package:social_media/screen/edit_post_screen.dart';
 import 'package:social_media/utils/date_utils.dart';
 import 'package:social_media/utils/firestore_database.dart';
 
@@ -18,8 +19,6 @@ class UserPost extends StatefulWidget {
 }
 
 class _UserPostState extends State<UserPost> {
-  var postModel;
-
   @override
   Widget build(BuildContext context) {
     String toReadableDate(Timestamp timestamp) {
@@ -103,10 +102,13 @@ class _UserPostState extends State<UserPost> {
                     ],
                     onSelected: (item) {
                       if (item == 0) {
-                        Navigator.pushNamed(
+                        Navigator.push(
                           context,
-                          '/edit-post',
-                          arguments: postModel,
+                          MaterialPageRoute(
+                            builder: (context) => EditPostScreen(
+                              exitingPost: widget.postModel,
+                            ),
+                          ),
                         );
                       }
                       if (item == 1) {
