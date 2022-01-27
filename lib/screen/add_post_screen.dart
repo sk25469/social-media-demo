@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media/model/post.dart';
+import 'package:social_media/screen/bottom_nav.dart';
 import 'package:social_media/utils/file_utils.dart';
 import 'package:social_media/utils/firestore_database.dart';
 import 'package:uuid/uuid.dart';
@@ -21,6 +22,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
   final _formKey = GlobalKey<FormState>();
   XFile? _image;
   final _caption = TextEditingController();
+  bool _isLoading = false;
+  bool _noImageSelected = false;
+
+  get userId => FirebaseAuth.instance.currentUser?.email;
 
   _imgFromCamera() async {
     XFile? image =
@@ -45,8 +50,17 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   _onSubmit() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       try {
         String id = const Uuid().v4();
+        if (_image == null) {
+          setState(() {
+            _noImageSelected = true;
+          });
+          return;
+        }
         String fileName = id + FileUtils.getFileExtension(File(_image!.path));
         File file = File(_image!.path);
         print(_image!.path);
@@ -58,13 +72,17 @@ class _AddPostScreenState extends State<AddPostScreen> {
         PostModel post = PostModel(
           description: _caption.text,
           mediaUrl: downloadUrl,
-          ownerId: 'abc',
+          ownerId: userId,
           postId: id,
           timestamp: Timestamp.now(),
           username: '',
         );
         await postsRef.add(post);
         print("added in firestore");
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.pop(context);
       } on FirebaseException catch (e) {
         print(e);
       }
@@ -171,53 +189,62 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ),
               key: _formKey,
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.only(
-                  top: 50,
-                  left: 20,
-                  right: 20,
-                ),
-                child: RaisedButton(
-                  onPressed: _onSubmit,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
-                  padding: const EdgeInsets.all(0.0),
-                  child: Ink(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: <Color>[
-                          Color.fromARGB(255, 125, 190, 233),
-                          Color.fromARGB(255, 1, 103, 255)
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50.0),
-                      ),
+            _isLoading
+                ? const Padding(
+                    padding: EdgeInsets.only(
+                      top: 50,
+                      left: 20,
+                      right: 20,
                     ),
+                    child: CircularProgressIndicator(),
+                  )
+                : Align(
+                    alignment: Alignment.bottomCenter,
                     child: Container(
-                      height: 50,
-                      constraints: const BoxConstraints(
-                        minWidth: 88.0,
-                        minHeight: 36.0,
-                      ), // min sizes for Material buttons
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Submit',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(
+                        top: 50,
+                        left: 20,
+                        right: 20,
+                      ),
+                      child: RaisedButton(
+                        onPressed: _onSubmit,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        padding: const EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color.fromARGB(255, 125, 190, 233),
+                                Color.fromARGB(255, 1, 103, 255)
+                              ],
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(50.0),
+                            ),
+                          ),
+                          child: Container(
+                            height: 50,
+                            constraints: const BoxConstraints(
+                              minWidth: 88.0,
+                              minHeight: 36.0,
+                            ), // min sizes for Material buttons
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'Submit',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
