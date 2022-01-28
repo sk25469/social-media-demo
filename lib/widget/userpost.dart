@@ -17,9 +17,13 @@ class UserPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void deletePost(String imageFileUrl) async {
-      var fileUrl = Uri.decodeFull(
-        path.basename(imageFileUrl),
-      ).replaceAll(RegExp(r'(\?alt).*'), '');
+      print(imageFileUrl);
+      var fileUrl = imageFileUrl
+          .replaceAll(
+              RegExp(
+                  r'https://firebasestorage.googleapis.com/v0/b/social-media-demo-9927c.appspot.com/o/images%2F'),
+              '')
+          .split('?')[0];
 
       await posts.child(fileUrl).delete();
 
