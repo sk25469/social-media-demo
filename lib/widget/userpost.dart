@@ -3,7 +3,6 @@ import 'package:social_media/model/post.dart';
 import 'package:social_media/screen/edit_post_screen.dart';
 import 'package:social_media/utils/date_utils.dart';
 import 'package:social_media/utils/firestore_database.dart';
-import 'package:path/path.dart' as path;
 
 class UserPost extends StatelessWidget {
   final PostModel postModel;
@@ -16,8 +15,10 @@ class UserPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Deletes the post from the firestore-database
+    /// then deletes the file from the firebase-storage
+    /// takes [String] download url of the file as parameter
     void deletePost(String imageFileUrl) async {
-      print(imageFileUrl);
       var fileUrl = imageFileUrl
           .replaceAll(
               RegExp(
