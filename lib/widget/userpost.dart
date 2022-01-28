@@ -3,6 +3,7 @@ import 'package:social_media/model/post.dart';
 import 'package:social_media/screen/edit_post_screen.dart';
 import 'package:social_media/utils/date_utils.dart';
 import 'package:social_media/utils/firestore_database.dart';
+import 'package:path/path.dart' as path;
 
 class UserPost extends StatefulWidget {
   final PostModel postModel;
@@ -20,7 +21,13 @@ class UserPost extends StatefulWidget {
 class _UserPostState extends State<UserPost> {
   @override
   Widget build(BuildContext context) {
-    void deletePost() async {
+    void deletePost(String imageFileUrl) async {
+      var fileUrl = Uri.decodeFull(
+        path.basename(imageFileUrl),
+      ).replaceAll(RegExp(r'(\?alt).*'), '');
+
+      await posts.child(fileUrl).delete();
+
       await postsRef.where('postId', isEqualTo: widget.postModel.postId).get().then(
         (snapshot) {
           for (var doc in snapshot.docs) {
@@ -106,7 +113,7 @@ class _UserPostState extends State<UserPost> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      deletePost();
+                                      deletePost(widget.postModel.mediaUrl);
                                       Navigator.pop(context);
                                     },
                                     child: const Text("Yes"),
