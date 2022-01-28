@@ -5,7 +5,7 @@ import 'package:social_media/utils/date_utils.dart';
 import 'package:social_media/utils/firestore_database.dart';
 import 'package:path/path.dart' as path;
 
-class UserPost extends StatefulWidget {
+class UserPost extends StatelessWidget {
   final PostModel postModel;
   final bool isMyPost;
   const UserPost({
@@ -15,11 +15,6 @@ class UserPost extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<UserPost> createState() => _UserPostState();
-}
-
-class _UserPostState extends State<UserPost> {
-  @override
   Widget build(BuildContext context) {
     void deletePost(String imageFileUrl) async {
       var fileUrl = Uri.decodeFull(
@@ -28,7 +23,7 @@ class _UserPostState extends State<UserPost> {
 
       await posts.child(fileUrl).delete();
 
-      await postsRef.where('postId', isEqualTo: widget.postModel.postId).get().then(
+      await postsRef.where('postId', isEqualTo: postModel.postId).get().then(
         (snapshot) {
           for (var doc in snapshot.docs) {
             doc.reference.delete();
@@ -55,7 +50,7 @@ class _UserPostState extends State<UserPost> {
                         const Icon(Icons.account_circle),
                         const SizedBox(width: 8),
                         Text(
-                          "@" + widget.postModel.username,
+                          "@" + postModel.username,
                           style: const TextStyle(
                             fontSize: 18,
                           ),
@@ -64,7 +59,7 @@ class _UserPostState extends State<UserPost> {
                     ),
                   ),
                 ),
-                if (widget.isMyPost)
+                if (isMyPost)
                   PopupMenuButton(
                     icon: const Icon(
                       Icons.more_vert,
@@ -96,7 +91,7 @@ class _UserPostState extends State<UserPost> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => EditPostScreen(
-                              exitingPost: widget.postModel,
+                              exitingPost: postModel,
                             ),
                           ),
                         );
@@ -113,7 +108,7 @@ class _UserPostState extends State<UserPost> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      deletePost(widget.postModel.mediaUrl);
+                                      deletePost(postModel.mediaUrl);
                                       Navigator.pop(context);
                                     },
                                     child: const Text("Yes"),
@@ -142,7 +137,7 @@ class _UserPostState extends State<UserPost> {
                 left: 10,
               ),
               child: Text(
-                widget.postModel.description,
+                postModel.description,
                 style: const TextStyle(
                   fontSize: 16,
                 ),
@@ -152,7 +147,7 @@ class _UserPostState extends State<UserPost> {
               width: double.infinity,
               height: 250,
               child: Image.network(
-                widget.postModel.mediaUrl,
+                postModel.mediaUrl,
                 fit: BoxFit.scaleDown,
               ),
             ),
@@ -164,7 +159,7 @@ class _UserPostState extends State<UserPost> {
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: Text(
-                      toReadableDate(widget.postModel.timestamp),
+                      toReadableDate(postModel.timestamp),
                       style: const TextStyle(
                         fontSize: 14,
                       ),
@@ -176,7 +171,7 @@ class _UserPostState extends State<UserPost> {
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                      toReadableTime(widget.postModel.timestamp),
+                      toReadableTime(postModel.timestamp),
                       style: const TextStyle(
                         fontSize: 14,
                       ),
