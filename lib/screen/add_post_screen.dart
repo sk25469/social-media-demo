@@ -63,11 +63,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
         }
         String fileName = id + FileUtils.getFileExtension(File(_image!.path));
         File file = File(_image!.path);
-        print(_image!.path);
+        // print(_image!.path);
         await posts.child(fileName).putFile(file);
-        print("upload done");
+        // print("upload done");
         String downloadUrl = await posts.child(fileName).getDownloadURL();
-        print("download link is " + downloadUrl);
+        // print("download link is " + downloadUrl);
 
         PostModel post = PostModel(
           description: _caption.text,
@@ -78,13 +78,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
           username: currentUserId(userId),
         );
         await postsRef.add(post);
-        print("added in firestore");
+        // print("added in firestore");
         setState(() {
           _isLoading = false;
         });
         Navigator.pop(context);
       } on FirebaseException catch (e) {
-        print(e);
+        // print(e);
       }
     }
   }
@@ -233,7 +233,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             ), // min sizes for Material buttons
                             alignment: Alignment.center,
                             child: const Text(
-                              'Submit',
+                              'Post',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 15,

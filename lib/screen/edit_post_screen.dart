@@ -35,18 +35,18 @@ class _EditPostScreenState extends State<EditPostScreen> {
               .where('postId', isEqualTo: widget.exitingPost.postId)
               .get()
               .then((value) => value.docs[0].id);
-          print(docId);
+          // print(docId);
           await postsRef.doc(docId).update({
             'description': _caption.text,
             'timestamp': Timestamp.now(),
           });
-          print("updated in firestore");
+          // print("updated in firestore");
           setState(() {
             _isLoading = false;
           });
           Navigator.pop(context);
-        } on FirebaseException catch (e) {
-          print(e);
+        } on FirebaseException {
+          // print(e);
         }
       }
     }

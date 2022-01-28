@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/model/post.dart';
 import 'package:social_media/screen/edit_post_screen.dart';
@@ -21,22 +20,6 @@ class UserPost extends StatefulWidget {
 class _UserPostState extends State<UserPost> {
   @override
   Widget build(BuildContext context) {
-    String toReadableDate(Timestamp timestamp) {
-      var day = timestamp.toDate().day;
-      var month = monthDateToName[timestamp.toDate().month];
-      var year = (timestamp.toDate().year) % 100;
-      return '${day}th $month\' $year';
-    }
-
-    String toReadableTime(Timestamp timestamp) {
-      var hour = timestamp.toDate().hour;
-      var minute = timestamp.toDate().minute;
-      var ampm = hour >= 12 ? 'PM' : 'AM';
-      hour = hour % 12;
-      hour = hour == 0 ? 12 : hour;
-      return '$hour:$minute $ampm';
-    }
-
     void deletePost() async {
       await postsRef.where('postId', isEqualTo: widget.postModel.postId).get().then(
         (snapshot) {
@@ -139,7 +122,6 @@ class _UserPostState extends State<UserPost> {
                             );
                           },
                         );
-                        // deletePost();
                       }
                     },
                   ),

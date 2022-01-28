@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../provider/auth_provider.dart';
 
@@ -200,13 +199,18 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Container(
-                            margin:
-                                const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 8,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(25)),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(25),
+                            ),
                             child: TextFormField(
                               controller: _password,
                               obscureText: true,
@@ -286,7 +290,9 @@ class _LoginPageState extends State<LoginPage> {
                             margin: const EdgeInsets.symmetric(horizontal: 16),
                             width: double.infinity,
                             child: _isLoading
-                                ? const Center(child: CircularProgressIndicator())
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
                                 : MaterialButton(
                                     onPressed: _onPressedFunction,
                                     child: Text(

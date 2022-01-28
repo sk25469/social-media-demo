@@ -5,9 +5,6 @@ import 'package:social_media/screen/home_screen.dart';
 import 'package:social_media/screen/profile_screen.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
-/// This is the dimension of floation action button, used for the animation while using
-/// [OpenContainer]
-
 class BottomNavigationScreen extends StatefulWidget {
   static const routeName = '/bottom-nav-screen';
   const BottomNavigationScreen({Key? key}) : super(key: key);

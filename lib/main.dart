@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:social_media/screen/add_post_screen.dart';
 import 'package:social_media/screen/auth_checker.dart';
 import 'package:social_media/screen/bottom_nav.dart';
-import 'package:social_media/screen/edit_post_screen.dart';
 import 'package:social_media/screen/error_screen.dart';
 import 'package:social_media/screen/home_screen.dart';
 import 'package:social_media/screen/my_post_screen.dart';
@@ -40,7 +39,6 @@ class MyApp extends ConsumerWidget {
         AddPostScreen.routeName: (context) => const AddPostScreen(),
         BottomNavigationScreen.routeName: (context) => const BottomNavigationScreen(),
         MyPostScreen.routeName: (context) => const MyPostScreen(),
-        // EditPostScreen.routeName: (context) => const EditPostScreen(),
       },
     );
   }
