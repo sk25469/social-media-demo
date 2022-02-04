@@ -162,21 +162,9 @@ class UserPost extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      toReadableDate(postModel.timestamp),
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                      toReadableTime(postModel.timestamp),
+                      durationAgo(postModel.timestamp),
                       style: const TextStyle(
                         fontSize: 14,
                       ),

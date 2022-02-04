@@ -15,56 +15,58 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'My Feeds',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.white,
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await Future.delayed(
-            const Duration(
-              seconds: 1,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'My Feeds',
+            style: TextStyle(
+              color: Colors.black,
             ),
-          );
-          setState(() {});
-        },
-        child: StreamBuilder<QuerySnapshot<PostModel>>(
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
-            }
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            final updatedPosts = snapshot.requireData;
-            if (updatedPosts.size == 0) {
-              return const Center(
-                child: Text('No posts available\nPlease add some posts!'),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: updatedPosts.size,
-                itemBuilder: (context, index) {
-                  return UserPost(
-                    postModel: updatedPosts.docs[index].data(),
-                    isMyPost: false,
-                  );
-                },
-              );
-            }
+          ),
+          elevation: 0,
+          backgroundColor: Colors.white,
+        ),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await Future.delayed(
+              const Duration(
+                seconds: 1,
+              ),
+            );
+            setState(() {});
           },
-          stream: postsRef.orderBy('timestamp', descending: true).limit(20).snapshots(),
+          child: StreamBuilder<QuerySnapshot<PostModel>>(
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              }
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              final updatedPosts = snapshot.requireData;
+              if (updatedPosts.size == 0) {
+                return const Center(
+                  child: Text('No posts available\nPlease add some posts!'),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: updatedPosts.size,
+                  itemBuilder: (context, index) {
+                    return UserPost(
+                      postModel: updatedPosts.docs[index].data(),
+                      isMyPost: false,
+                    );
+                  },
+                );
+              }
+            },
+            stream: postsRef.orderBy('timestamp', descending: true).limit(20).snapshots(),
+          ),
         ),
       ),
     );

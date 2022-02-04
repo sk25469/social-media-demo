@@ -28,8 +28,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
   get userId => FirebaseAuth.instance.currentUser?.email;
 
   _imgFromCamera() async {
-    XFile? image =
-        await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 50);
+    XFile? image = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+      maxHeight: 250,
+      maxWidth: double.infinity,
+    );
     if (image == null) {
       print("no image");
     }
@@ -40,8 +44,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
   _imgFromGallery() async {
-    XFile? image =
-        await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 50);
+    XFile? image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+      maxHeight: 250,
+      maxWidth: double.infinity,
+    );
 
     setState(() {
       _image = image;

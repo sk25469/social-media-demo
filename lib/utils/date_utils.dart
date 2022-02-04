@@ -30,3 +30,21 @@ String toReadableTime(Timestamp timestamp) {
   hour = hour == 0 ? 12 : hour;
   return '$hour:$minute $ampm';
 }
+
+String durationAgo(Timestamp timestamp) {
+  var now = DateTime.now();
+  var diff = now.difference(timestamp.toDate());
+  var days = diff.inDays;
+  var hours = diff.inHours;
+  var minutes = diff.inMinutes;
+  var seconds = diff.inSeconds;
+  if (days > 0) {
+    return '$days days ago';
+  } else if (hours > 0) {
+    return '$hours hours ago';
+  } else if (minutes > 0) {
+    return '$minutes minutes ago';
+  } else {
+    return '$seconds seconds ago';
+  }
+}
