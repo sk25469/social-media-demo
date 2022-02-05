@@ -1,14 +1,9 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:social_media/model/post.dart';
-import 'package:social_media/utils/file_utils.dart';
-import 'package:social_media/utils/firestore_database.dart';
-import 'package:social_media/utils/user_utils.dart';
-import 'package:uuid/uuid.dart';
+import 'package:social_media/utils/service.dart';
 
 class AddPostScreen extends StatefulWidget {
   static const routeName = '/add-post';
@@ -23,7 +18,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   XFile? _image;
   final _caption = TextEditingController();
   bool _isLoading = false;
-  bool _noImageSelected = false;
+  // bool _noImageSelected = false;
 
   get userId => FirebaseAuth.instance.currentUser?.email;
 
@@ -62,31 +57,27 @@ class _AddPostScreenState extends State<AddPostScreen> {
         _isLoading = true;
       });
       try {
-        String id = const Uuid().v4();
-        if (_image == null) {
-          setState(() {
-            _noImageSelected = true;
-          });
-          return;
-        }
-        String fileName = id + FileUtils.getFileExtension(File(_image!.path));
-        File file = File(_image!.path);
-        // print(_image!.path);
-        await posts.child(fileName).putFile(file);
-        // print("upload done");
-        String downloadUrl = await posts.child(fileName).getDownloadURL();
-        // print("download link is " + downloadUrl);
+        // if (_image == null) {
+        //   setState(() {
+        //     _noImageSelected = true;
+        //   });
+        //   return;
+        // }
+        await PostService()
+            .addPost(
+              caption: _caption.text,
+              image: _image,
+              userId: userId,
+            )
+            .whenComplete(
+              () => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Post added successfully"),
+                  duration: Duration(seconds: 1),
+                ),
+              ),
+            );
 
-        PostModel post = PostModel(
-          description: _caption.text,
-          mediaUrl: downloadUrl,
-          ownerId: userId,
-          postId: id,
-          timestamp: Timestamp.now(),
-          username: currentUserId(userId),
-        );
-        await postsRef.add(post);
-        // print("added in firestore");
         setState(() {
           _isLoading = false;
         });

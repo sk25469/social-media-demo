@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/model/post.dart';
 import 'package:social_media/screen/edit_post_screen.dart';
 import 'package:social_media/utils/date_utils.dart';
 import 'package:social_media/utils/firestore_database.dart';
+import 'package:social_media/utils/service.dart';
 
 class UserPost extends StatelessWidget {
   final PostModel postModel;
@@ -15,28 +17,6 @@ class UserPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// Deletes the post from the firestore-database
-    /// then deletes the file from the firebase-storage
-    /// takes [String] download url of the file as parameter
-    void deletePost(String imageFileUrl) async {
-      var fileUrl = imageFileUrl
-          .replaceAll(
-              RegExp(
-                  r'https://firebasestorage.googleapis.com/v0/b/social-media-demo-9927c.appspot.com/o/images%2F'),
-              '')
-          .split('?')[0];
-
-      await posts.child(fileUrl).delete();
-
-      await postsRef.where('postId', isEqualTo: postModel.postId).get().then(
-        (snapshot) {
-          for (var doc in snapshot.docs) {
-            doc.reference.delete();
-          }
-        },
-      );
-    }
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -106,25 +86,45 @@ class UserPost extends StatelessWidget {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                              elevation: 5,
                               title: const Text(
-                                  "Are you sure you want to delete this post?"),
-                              content: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      deletePost(postModel.mediaUrl);
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("Yes"),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("No"),
-                                  ),
-                                ],
+                                "Are you sure you want to delete this post?",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              content: SizedBox(
+                                height: 100,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.red,
+                                      ),
+                                      onPressed: () async {
+                                        await PostService()
+                                            .deletePost(
+                                              postModel.mediaUrl,
+                                              postModel.postId,
+                                            )
+                                            .whenComplete(
+                                              () => Navigator.pop(context),
+                                            );
+                                      },
+                                      child: const Text("Yes"),
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.grey,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("No"),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
@@ -151,9 +151,13 @@ class UserPost extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               height: 250,
-              child: Image.network(
-                postModel.mediaUrl,
+              child: CachedNetworkImage(
+                imageUrl: postModel.mediaUrl,
                 fit: BoxFit.scaleDown,
+                placeholder: (context, url) => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
             Row(
