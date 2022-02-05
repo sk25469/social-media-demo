@@ -1,12 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/model/post.dart';
-import 'package:social_media/utils/firestore_database.dart';
+import 'package:social_media/utils/service.dart';
 
 class EditPostScreen extends StatefulWidget {
   static const routeName = '/edit-post';
   final PostModel exitingPost;
-  const EditPostScreen({Key? key, required this.exitingPost}) : super(key: key);
+  const EditPostScreen({
+    Key? key,
+    required this.exitingPost,
+  }) : super(key: key);
 
   @override
   State<EditPostScreen> createState() => _EditPostScreenState();
@@ -31,16 +35,19 @@ class _EditPostScreenState extends State<EditPostScreen> {
           _isLoading = true;
         });
         try {
-          String docId = await postsRef
-              .where('postId', isEqualTo: widget.exitingPost.postId)
-              .get()
-              .then((value) => value.docs[0].id);
-          // print(docId);
-          await postsRef.doc(docId).update({
-            'description': _caption.text,
-            'timestamp': Timestamp.now(),
-          });
-          // print("updated in firestore");
+          await PostService()
+              .updatePost(
+                widget.exitingPost.postId,
+                _caption.text,
+              )
+              .whenComplete(
+                () => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Post updated successfully'),
+                    duration: Duration(seconds: 1),
+                  ),
+                ),
+              );
           setState(() {
             _isLoading = false;
           });
@@ -94,9 +101,13 @@ class _EditPostScreenState extends State<EditPostScreen> {
                   SizedBox(
                     width: double.infinity,
                     height: 250,
-                    child: Image.network(
-                      widget.exitingPost.mediaUrl,
+                    child: CachedNetworkImage(
                       fit: BoxFit.scaleDown,
+                      imageUrl: widget.exitingPost.mediaUrl,
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
                   )
                 ],

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:social_media/model/post.dart';
 import 'package:social_media/screen/edit_post_screen.dart';
 import 'package:social_media/utils/date_utils.dart';
-import 'package:social_media/utils/firestore_database.dart';
 import 'package:social_media/utils/service.dart';
 
 class UserPost extends StatelessWidget {

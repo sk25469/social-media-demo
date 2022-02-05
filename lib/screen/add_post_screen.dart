@@ -151,7 +151,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Caption can\'t be empty';
                         }
                         if (value.length > 100) {
                           return 'More than 100 characters';

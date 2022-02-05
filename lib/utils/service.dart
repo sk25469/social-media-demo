@@ -57,4 +57,16 @@ class PostService {
       },
     );
   }
+
+  Future<void> updatePost(String postId, String caption) async {
+    String docId = await postsRef
+        .where('postId', isEqualTo: postId)
+        .get()
+        .then((value) => value.docs[0].id);
+    // print(docId);
+    await postsRef.doc(docId).update({
+      'description': caption,
+      'timestamp': Timestamp.now(),
+    });
+  }
 }
