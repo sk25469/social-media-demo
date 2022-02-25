@@ -4,4 +4,6 @@ Social Media application using Firebase as a backend and service. User can share
 It shows feeds of all the posts of other users.
 
 ## Demo
-![Live Demo](https://drive.google.com/file/d/1yP-TDUszQ0QeRudyrhHc2EiU5NE4I8VY/view?usp=sharing)
+
+https://user-images.githubusercontent.com/68475465/155759147-24691e48-1a92-4e26-88da-b6846b1d8456.mp4
+
