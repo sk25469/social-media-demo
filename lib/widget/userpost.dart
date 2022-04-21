@@ -26,7 +26,12 @@ class UserPost extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(
+                    top: 10.0,
+                    left: 8.0,
+                    right: 8.0,
+                    bottom: 3,
+                  ),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Row(
@@ -133,11 +138,12 @@ class UserPost extends StatelessWidget {
                   ),
               ],
             ),
+            const Divider(thickness: 2),
             Container(
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(
                 bottom: 8,
-                top: 5,
+                top: 3,
                 left: 10,
               ),
               child: Text(

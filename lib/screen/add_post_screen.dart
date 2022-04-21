@@ -82,7 +82,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           _isLoading = false;
         });
         Navigator.pop(context);
-      } on FirebaseException catch (e) {
+      } on FirebaseException {
         // print(e);
       }
     }

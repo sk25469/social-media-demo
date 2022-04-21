@@ -59,7 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     return UserPost(
                       postModel: updatedPosts.docs[index].data(),
-                      isMyPost: false,
+                      isMyPost: updatedPosts.docs[index].data().ownerId ==
+                          firebaseAuth.currentUser!.email,
                     );
                   },
                 );
